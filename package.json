@@ -1,0 +1,21 @@
+{
+  "name": "youtube-music-list",
+  "version": "1.0.0",
+  "description": "Node.js and Express backend for a collaborative Youtube Music List app",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Borsodi Dávid",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.16.1",
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "mongodb": "^2.2.26",
+    "mongoose": "^4.9.6"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  }
+}
