@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-var Room = mongoose.model({
+var Room = mongoose.model('Room', {
     name: {
         type: String,
         required: true,
@@ -9,9 +9,19 @@ var Room = mongoose.model({
     },
     password: {
         type: String,
+        required: false,
+        trim: true
+    },
+    owner: {
+        type: String,
         required: true,
         minlength: 1,
         trim: true
+    },
+    isPublic: {
+        type: Boolean,
+        required: false,
+        default: true
     }
 });
 
