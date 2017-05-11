@@ -28,9 +28,9 @@ app.get('/test', (req, res) => {
 //Send songs to the be added to the list
 app.post('/song', (req, res) => {
     var videoID = req.body.id;
+    var song = req.body;
     var songDetails = {};
 
-   res.send(req.body);
 
     /*getYoutubeVideo.getVideoDetails(videoID)
         .then((song) => {
