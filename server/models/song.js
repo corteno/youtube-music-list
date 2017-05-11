@@ -7,10 +7,6 @@ var Song = mongoose.model('Song', {
         minlength: 1,
         trim: true
     },
-    etag: {
-        type: String,
-        required: true
-    },
     id: {
         type: String,
         required: true,
