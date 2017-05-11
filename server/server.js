@@ -30,7 +30,9 @@ app.post('/song', (req, res) => {
     var videoID = req.body.id;
     var songDetails = {};
 
-    getYoutubeVideo.getVideoDetails(videoID)
+   res.send(req.body);
+
+    /*getYoutubeVideo.getVideoDetails(videoID)
         .then((song) => {
 
             var songToAdd = new Song({
@@ -47,7 +49,21 @@ app.post('/song', (req, res) => {
 
         }, (e) => {
             res.status(400).send();
-        });
+        });*/
+
+    var songToAdd = new Song({
+        title: song.title,
+        id: song.id,
+        duration: song.duration,
+        thumbnail: song.thumbnail
+    });
+
+    songToAdd.save().then((doc) => {
+        res.send(doc);
+    }, (e) => {
+        res.status(400).send(e);
+    });
+
 
 });
 
