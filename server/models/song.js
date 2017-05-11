@@ -7,6 +7,10 @@ var Song = mongoose.model('Song', {
         minlength: 1,
         trim: true
     },
+    etag: {
+        type: String,
+        required: true
+    },
     id: {
         type: String,
         required: true,
@@ -15,6 +19,12 @@ var Song = mongoose.model('Song', {
     duration: {
         type: String,
         required: true
+    },
+    thumbnail: {
+        type: String,
+        required: true,
+        minlength: 1,
+        trim: true
     }
 });
 
