@@ -143,7 +143,7 @@ app.post('/login', (req, res) => {
         res.status(400).send({status: 'Wrong username or password!'});
 
     }, (e) => {
-        res.status(400).send();
+        res.status(400).send(e);
     });
 
 });
