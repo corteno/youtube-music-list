@@ -127,10 +127,11 @@ app.post('/user', (req, res) => {
 });
 
 //Login
-app.post('/login/:username/:password', (req, res) => {
+app.post('/login', (req, res) => {
+    console.log(req.body);
     var user = new User({
-        username: req.params.username,
-        password: req.params.password
+        username: req.body.username,
+        password: req.body.password
     });
 
     User.findOne({username: user.username, password: user.password}).then((doc) => {
