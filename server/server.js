@@ -33,23 +33,23 @@ app.post('/song', (req, res) => {
 
 
     /*getYoutubeVideo.getVideoDetails(videoID)
-        .then((song) => {
+     .then((song) => {
 
-            var songToAdd = new Song({
-                title: song.title,
-                id: song.id,
-                duration: song.duration
-            });
+     var songToAdd = new Song({
+     title: song.title,
+     id: song.id,
+     duration: song.duration
+     });
 
-            songToAdd.save().then((doc) => {
-                res.send(doc);
-            }, (e) => {
-                res.status(400).send(e);
-            });
+     songToAdd.save().then((doc) => {
+     res.send(doc);
+     }, (e) => {
+     res.status(400).send(e);
+     });
 
-        }, (e) => {
-            res.status(400).send();
-        });*/
+     }, (e) => {
+     res.status(400).send();
+     });*/
 
     var songToAdd = new Song({
         title: song.title,
@@ -128,12 +128,12 @@ app.post('/user', (req, res) => {
 
 //Login
 app.post('/login', (req, res) => {
-    console.log(req.body);
-    var user = {
+    console.log("Req: ", req);
+    var user = new User({
         username: req.body.username,
         password: req.body.password
-    };
-    console.log();
+    });
+    console.log("User: ", user);
 
     User.findOne({username: user.username, password: user.password}).then((doc) => {
         if (doc) {
@@ -149,7 +149,6 @@ app.post('/login', (req, res) => {
 });
 
 
-
 //===============================
 //         Room Routes
 //===============================
@@ -163,7 +162,7 @@ app.post('/room', (req, res) => {
     });
 
     Room.findOne({owner: room.owner}).then((doc) => {
-        if(doc){
+        if (doc) {
             return res.status(400).send({status: 'Owner already has a room!'});
         }
 
