@@ -106,7 +106,8 @@ app.delete('/song/:id', (req, res) => {
 app.post('/user', (req, res) => {
     var user = new User({
         username: req.body.username,
-        password: req.body.password
+        password: req.body.password,
+        email: req.body.email
     });
 
     User.findOne({username: user.username}).then((doc) => {
@@ -126,10 +127,10 @@ app.post('/user', (req, res) => {
 });
 
 //Login
-app.post('/login', (req, res) => {
+app.post('/login/:username/:password', (req, res) => {
     var user = new User({
-        username: req.body.username,
-        password: req.body.password
+        username: req.params.username,
+        password: req.params.password
     });
 
     User.findOne({username: user.username, password: user.password}).then((doc) => {
