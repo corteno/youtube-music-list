@@ -12,30 +12,9 @@ var {Room} = require('./models/room');
 var app = express();
 const port = process.env.PORT || 3000;
 
-var jwt = require('express-jwt');
-var jwks = require('jwks-rsa');
-
-var jwtCheck = jwt({
-    secret: jwks.expressJwtSecret({
-        cache: true,
-        rateLimit: true,
-        jwksRequestsPerMinute: 5,
-        jwksUri: "https://corten.eu.auth0.com/.well-known/jwks.json"
-    }),
-    audience: 'https://yt-music-list.com',
-    issuer: "https://corten.eu.auth0.com/",
-    algorithms: ['RS256']
-});
 
 
-
-//app.use(bodyParser.json());
-app.use(jwtCheck, bodyParser.json());
-
-app.get('/authorized', jwtCheck, (req, res) => {
-    res.send('Secured Resource');
-});
-
+app.use(bodyParser.json());
 
 
 app.get('/test', (req, res) => {
