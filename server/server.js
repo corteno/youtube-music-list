@@ -29,10 +29,10 @@ var jwtCheck = jwt({
 
 
 
-app.use(bodyParser.json());
-app.use(jwtCheck);
+//app.use(bodyParser.json());
+app.use(jwtCheck, bodyParser.json());
 
-app.get('/authorized', (req, res) => {
+app.get('/authorized', jwtCheck, (req, res) => {
     res.send('Secured Resource');
 });
 
