@@ -182,6 +182,14 @@ app.post('/room', (req, res) => {
 
 });
 
+app.get('/rooms', (req, res) => {
+    Room.find().then((rooms) => {
+        res.send({rooms});
+    }, (e) => {
+        res.status(400).send();
+    });
+});
+
 
 app.listen(port, () => {
     console.log(`Started up at port ${port}`);
