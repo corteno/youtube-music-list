@@ -161,7 +161,8 @@ app.post('/room', (req, res) => {
         name: req.body.name,
         password: req.body.password,
         owner: req.body.owner,
-        isPublic: req.body.isPublic
+        isPublic: req.body.isPublic,
+        id: req.body.id
     });
 
     Room.findOne({owner: room.owner}).then((doc) => {

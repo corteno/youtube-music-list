@@ -22,6 +22,10 @@ var Room = mongoose.model('Room', {
         type: Boolean,
         required: false,
         default: true
+    },
+    id: {
+        type: String,
+        required: true
     }
 });
 
