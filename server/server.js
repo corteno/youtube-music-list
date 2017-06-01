@@ -1,17 +1,16 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var {ObjectID} = require('mongodb');
-var getYoutubeVideo = require('./functions/get-youtube-video');
 
 
 var {mongoose} = require('./db/mongoose');
 var {Song} = require('./models/song');
 var {User} = require('./models/user');
 var {Room} = require('./models/room');
+var {Playlist} = require('./models/playlist');
 
 var app = express();
 const port = process.env.PORT || 3000;
-
 
 
 app.use(bodyParser.json());
@@ -33,36 +32,44 @@ app.post('/song', (req, res) => {
     var videoID = req.body.id;
     var song = req.body;
     var songDetails = {};
+    var roomID = req.body.roomId;
 
 
-    /*getYoutubeVideo.getVideoDetails(videoID)
-     .then((song) => {
+    Playlist.findOne({id: roomID}).then((doc) => {
+        if (doc) {
+            var songToAdd = new Song({
+                title: song.title,
+                id: song.id,
+                duration: song.duration,
+                thumbnail: song.thumbnail
+            });
 
-     var songToAdd = new Song({
-     title: song.title,
-     id: song.id,
-     duration: song.duration
-     });
+            let playlistArray = doc.songs;
+            playlistArray.push(songToAdd);
+            
+            console.log(doc, playlistArray);
 
-     songToAdd.save().then((doc) => {
-     res.send(doc);
-     }, (e) => {
-     res.status(400).send(e);
-     });
+            Playlist.update({_id: doc._id}, {
+                songs: playlistArray
+            })
+                .then((doc) => {
+                    res.send(doc);
+                }, (e) => {
+                    res.status(400).send(e);
+                });
 
-     }, (e) => {
-     res.status(400).send();
-     });*/
+            /*songToAdd.save().then((doc) => {
+             res.send(doc);
+             }, (e) => {
+             res.status(400).send(e);
+             });*/
 
-    var songToAdd = new Song({
-        title: song.title,
-        id: song.id,
-        duration: song.duration,
-        thumbnail: song.thumbnail
-    });
 
-    songToAdd.save().then((doc) => {
-        res.send(doc);
+
+        }
+
+
+
     }, (e) => {
         res.status(400).send(e);
     });
@@ -157,6 +164,10 @@ app.post('/login', (req, res) => {
 //===============================
 
 app.post('/room', (req, res) => {
+    let roomOK = false;
+    let playlistOK = false;
+    let response = '';
+
     var room = new Room({
         name: req.body.name,
         password: req.body.password,
@@ -165,17 +176,48 @@ app.post('/room', (req, res) => {
         id: req.body.id
     });
 
+    var playlist = new Playlist({
+        id: req.body.id,
+        songs: []
+    });
+
     Room.findOne({owner: room.owner}).then((doc) => {
         if (doc) {
             return res.status(400).send({status: 'Owner already has a room!'});
         }
 
+        Playlist.findOne({id: playlist.id}).then((doc) => {
+            if (doc) {
+                return res.status(400).send({status: 'Room already exists'});
+            }
 
-        room.save().then((doc) => {
-            res.send(doc);
+            playlist.save().then((doc) => {
+                playlistOK = true;
+                console.log(doc);
+            }, (e) => {
+                res.status(400).send(e);
+            });
+
         }, (e) => {
             res.status(400).send(e);
         });
+
+
+        room.save().then((doc) => {
+            roomOK = true;
+            if (roomOK && playlistOK) {
+                res.send(doc);
+            } else {
+                res.status(400).send('Error while creating Room', roomOK, playlistOK);
+            }
+
+            // response.concat(doc + "\n");
+
+
+        }, (e) => {
+            res.status(400).send(e);
+        });
+
 
     }, (e) => {
         res.status(400).send();

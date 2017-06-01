@@ -4,8 +4,8 @@
   "description": "Node.js and Express backend for a collaborative Youtube Music List app",
   "main": "server.js",
   "scripts": {
-    "test": "nodemon server/server.js",
-    "start": "node server/server.js"
+    "test": "nodemon ./server/server.js",
+    "start": "node ./server/server.js"
   },
   "author": "Borsodi Dávid",
   "license": "ISC",
@@ -16,7 +16,8 @@
     "express-jwt": "^5.3.0",
     "jwks-rsa": "^1.1.1",
     "mongodb": "^2.2.26",
-    "mongoose": "^4.9.6"
+    "mongoose": "^4.9.6",
+    "npm": "^5.0.1"
   },
   "devDependencies": {
     "nodemon": "^1.11.0"
