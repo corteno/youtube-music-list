@@ -29,9 +29,7 @@ app.get('/test', (req, res) => {
 
 //Send songs to the be added to the list
 app.post('/song', (req, res) => {
-    var videoID = req.body.id;
     var song = req.body;
-    var songDetails = {};
     var roomID = req.body.roomId;
 
 
@@ -46,7 +44,7 @@ app.post('/song', (req, res) => {
 
             let playlistArray = doc.songs;
             playlistArray.push(songToAdd);
-            
+
             console.log(doc, playlistArray);
 
             Playlist.update({_id: doc._id}, {
@@ -58,43 +56,78 @@ app.post('/song', (req, res) => {
                     res.status(400).send(e);
                 });
 
-            /*songToAdd.save().then((doc) => {
-             res.send(doc);
-             }, (e) => {
-             res.status(400).send(e);
-             });*/
-
-
-
         }
 
-
-
     }, (e) => {
-        res.status(400).send(e);
+        res.status(400).send("Room doesn't exist!");
     });
 
 
 });
 
 //Get all songs sent to the list
-app.get('/songs', (req, res) => {
-    Song.find().then((songs) => {
-        res.send({songs});
-    }, (e) => {
-        res.status(400).send();
-    });
+app.get('/songs/:id', (req, res) => {
+    Playlist.findOne({id: req.params.id}).then((doc) => {
+            if(doc){
+                res.send(doc);
+            } else {
+                res.status(400).send(`No such playlist! ID: ${req.params.id}`);
+            }
+        }, (e) => {
+            res.status(400).send(e);
+        });
+
+
+    /*Song.find().then((songs) => {
+     res.send({songs});
+     }, (e) => {
+     res.status(400).send();
+     });*/
 });
 
 //Delete a song from a list
-app.delete('/song/:id', (req, res) => {
-    var id = req.params.id;
+app.delete('/song/:playlistId/:songId', (req, res) => {
+    let playlistId = req.params.playlistId;
+    let songId = req.params.songId;
 
-    if (!ObjectID.isValid(id)) {
-        return res.status(404).send();
-    }
+    Playlist.findOne({id: playlistId}).then((doc) => {
+        if(doc){
+            let playlist = doc;
 
-    Song.findByIdAndRemove(id).then((song) => {
+            playlist.songs.forEach((song) => {
+                
+                if(song._id == songId){
+                    //console.log(song._id, songId);
+                    playlist.songs.splice(playlist.songs.indexOf(song), 1);
+                    //console.log(playlist.songs);
+
+                    Playlist.findOneAndUpdate({id: playlistId}, playlist)
+                        .then((doc) =>{
+                            if(doc){
+                                //console.log(doc);
+                                return res.send(doc);
+                            }
+
+                        }, (e) => {
+                            console.log(e);
+                        });
+                }
+
+
+
+            });
+            res.status(400).send('No such song found!');
+
+        } else {
+            res.status(400).send(`No such playlist to remove from! ID: ${playlistId}`);
+        }
+
+    }, (e) => {
+        res.status(400).send(e);
+    });
+
+
+    /*Song.findByIdAndRemove(playlistId).then((song) => {
 
         if (!song) {
             return res.status(404).send();
@@ -104,7 +137,7 @@ app.delete('/song/:id', (req, res) => {
 
     }, (e) => {
         res.status(400).send();
-    });
+    });*/
 
 });
 
