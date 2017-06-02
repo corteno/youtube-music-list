@@ -242,11 +242,10 @@ app.post('/room', (req, res) => {
 
 
         room.save().then((doc) => {
-            roomOK = true;
-            if (roomOK && playlistOK) {
+            if (doc) {
                 res.send(doc);
             } else {
-                res.status(400).send('Error while creating Room', roomOK, playlistOK);
+                res.status(400).send('Error while creating Room');
             }
 
             // response.concat(doc + "\n");
