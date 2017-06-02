@@ -68,14 +68,14 @@ app.post('/song', (req, res) => {
 //Get all songs sent to the list
 app.get('/songs/:id', (req, res) => {
     Playlist.findOne({id: req.params.id}).then((doc) => {
-            if(doc){
-                res.send(doc);
-            } else {
-                res.status(400).send(`No such playlist! ID: ${req.params.id}`);
-            }
-        }, (e) => {
-            res.status(400).send(e);
-        });
+        if (doc) {
+            res.send(doc);
+        } else {
+            res.status(400).send(`No such playlist! ID: ${req.params.id}`);
+        }
+    }, (e) => {
+        res.status(400).send(e);
+    });
 
 
     /*Song.find().then((songs) => {
@@ -91,19 +91,19 @@ app.delete('/song/:playlistId/:songId', (req, res) => {
     let songId = req.params.songId;
 
     Playlist.findOne({id: playlistId}).then((doc) => {
-        if(doc){
+        if (doc) {
             let playlist = doc;
 
             playlist.songs.forEach((song) => {
-                
-                if(song._id == songId){
+
+                if (song._id == songId) {
                     //console.log(song._id, songId);
                     playlist.songs.splice(playlist.songs.indexOf(song), 1);
                     //console.log(playlist.songs);
 
                     Playlist.findOneAndUpdate({id: playlistId}, playlist)
-                        .then((doc) =>{
-                            if(doc){
+                        .then((doc) => {
+                            if (doc) {
                                 //console.log(doc);
                                 return res.send(doc);
                             }
@@ -112,7 +112,6 @@ app.delete('/song/:playlistId/:songId', (req, res) => {
                             console.log(e);
                         });
                 }
-
 
 
             });
@@ -129,15 +128,15 @@ app.delete('/song/:playlistId/:songId', (req, res) => {
 
     /*Song.findByIdAndRemove(playlistId).then((song) => {
 
-        if (!song) {
-            return res.status(404).send();
-        }
+     if (!song) {
+     return res.status(404).send();
+     }
 
-        res.send(song);
+     res.send(song);
 
-    }, (e) => {
-        res.status(400).send();
-    });*/
+     }, (e) => {
+     res.status(400).send();
+     });*/
 
 });
 
@@ -224,7 +223,14 @@ app.post('/room', (req, res) => {
             }
 
             playlist.save().then((doc) => {
-                playlistOK = true;
+
+                room.save().then((doc) => {
+                    res.send(doc);
+
+                }, (e) => {
+                    res.status(400).send(e);
+                });
+
                 console.log(doc);
             }, (e) => {
                 res.status(400).send(e);
