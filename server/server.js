@@ -115,7 +115,7 @@ app.delete('/song/:playlistId/:songId', (req, res) => {
 
 
             });
-            res.status(400).send('No such song found!');
+            /*res.status(400).send('No such song found!');*/
 
         } else {
             res.status(400).send(`No such playlist to remove from! ID: ${playlistId}`);
@@ -195,6 +195,7 @@ app.post('/login', (req, res) => {
 //         Room Routes
 //===============================
 
+//Creating room
 app.post('/room', (req, res) => {
     let roomOK = false;
     let playlistOK = false;
@@ -260,6 +261,16 @@ app.post('/room', (req, res) => {
         res.status(400).send();
     });
 
+});
+
+app.get('/room/:id', (req, res) => {
+    Room.find({id: req.params.id}).then((doc) => {
+        if(doc){
+            return res.send(doc);
+        }
+    }, (e) => {
+        res.status(400).send(e);
+    });
 });
 
 app.get('/rooms', (req, res) => {
