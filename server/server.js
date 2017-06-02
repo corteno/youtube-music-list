@@ -199,7 +199,6 @@ app.post('/login', (req, res) => {
 app.post('/room', (req, res) => {
     let roomOK = false;
     let playlistOK = false;
-    let response = '';
 
     var room = new Room({
         name: req.body.name,
