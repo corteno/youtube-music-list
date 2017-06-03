@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e9b6ffd3-8bab-46c3-bdfa-2dff5c078a6e" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/youtube-music-list.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/package-lock.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/server.js" afterPath="$PROJECT_DIR$/server/server.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -27,8 +21,8 @@
       <file leaf-file-name="server.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/server/server.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="690">
-              <caret line="272" column="38" lean-forward="false" selection-start-line="272" selection-start-column="38" selection-end-line="272" selection-end-column="38" />
+            <state relative-caret-position="626">
+              <caret line="288" column="37" lean-forward="true" selection-start-line="288" selection-start-column="37" selection-end-line="288" selection-end-column="37" />
               <folding />
             </state>
           </provider>
@@ -235,7 +229,7 @@
       <workItem from="1495986698563" duration="1492000" />
       <workItem from="1496332325535" duration="657000" />
       <workItem from="1496495656714" duration="65000" />
-      <workItem from="1496498721532" duration="1310000" />
+      <workItem from="1496498721532" duration="1913000" />
     </task>
     <task id="LOCAL-00001" summary="- Added /rooms route">
       <created>1495882766054</created>
@@ -251,11 +245,18 @@
       <option name="project" value="LOCAL" />
       <updated>1495989167861</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="- WIP socket.io">
+      <created>1496500354031</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1496500354031</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6152000" />
+    <option name="totallyTimeSpent" value="6755000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1912" y="-8" width="1296" height="1000" extended-state="6" />
@@ -289,7 +290,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="- Added /rooms route" />
     <MESSAGE value="- Added id for rooms" />
-    <option name="LAST_COMMIT_MESSAGE" value="- Added id for rooms" />
+    <MESSAGE value="- WIP socket.io" />
+    <option name="LAST_COMMIT_MESSAGE" value="- WIP socket.io" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -386,8 +388,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/server/server.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="690">
-          <caret line="272" column="38" lean-forward="false" selection-start-line="272" selection-start-column="38" selection-end-line="272" selection-end-column="38" />
+        <state relative-caret-position="626">
+          <caret line="288" column="37" lean-forward="true" selection-start-line="288" selection-start-column="37" selection-end-line="288" selection-end-column="37" />
           <folding />
         </state>
       </provider>

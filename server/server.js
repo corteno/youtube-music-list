@@ -268,11 +268,7 @@ app.post('/room', (req, res) => {
 app.get('/room/:id', (req, res) => {
     Room.find({id: req.params.id}).then((doc) => {
         if(doc){
-            
-            io.on('connection', (socket) => {
-                console.log('connected');
-            });
-            
+
             return res.send(doc);
         }
     }, (e) => {
@@ -290,7 +286,17 @@ app.get('/rooms', (req, res) => {
 
 
 app.listen(port, () => {
+    open(`http://localhost:${port}`);
     console.log(`Started up at port ${port}`);
 });
+
+io.on('connection', (socket) => {
+    console.log('a user connected');
+
+    socket.on('disconnect', () => {
+        console.log('user disconnected');
+    });
+}
+
 
 module.exports = {app};
