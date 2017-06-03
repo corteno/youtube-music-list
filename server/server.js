@@ -286,7 +286,6 @@ app.get('/rooms', (req, res) => {
 
 
 app.listen(port, () => {
-    open(`http://localhost:${port}`);
     console.log(`Started up at port ${port}`);
 });
 
