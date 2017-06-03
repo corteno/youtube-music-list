@@ -2,6 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var {ObjectID} = require('mongodb');
 var io = require('socket.io')(app);
+var open = require('open');
 
 
 var {mongoose} = require('./db/mongoose');
@@ -287,6 +288,7 @@ app.get('/rooms', (req, res) => {
 
 app.listen(port, () => {
     console.log(`Started up at port ${port}`);
+    open(`http://localhost:${port}`);
 });
 
 io.on('connection', (socket) => {

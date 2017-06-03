@@ -18,6 +18,7 @@
     "mongodb": "^2.2.26",
     "mongoose": "^4.9.6",
     "npm": "^5.0.1",
+    "open": "0.0.5",
     "socket.io": "^2.0.2"
   },
   "devDependencies": {
