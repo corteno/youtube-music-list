@@ -17,6 +17,8 @@ const port = process.env.PORT || 3000;
 var server = require('http').Server(app);
 
 /*const server = app.listen(port);*/
+
+//Need this to enable CORS else it whines, figure out how to only allow it to one domain like yt.borsodidavid.com
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");

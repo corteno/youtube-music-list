@@ -21,8 +21,8 @@
       <file leaf-file-name="server.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/server/server.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="410">
-              <caret line="23" column="3" lean-forward="true" selection-start-line="23" selection-start-column="3" selection-end-line="23" selection-end-column="3" />
+            <state relative-caret-position="392">
+              <caret line="22" column="48" lean-forward="false" selection-start-line="22" selection-start-column="48" selection-end-line="22" selection-end-column="48" />
               <folding />
             </state>
           </provider>
@@ -229,7 +229,7 @@
       <workItem from="1495986698563" duration="1492000" />
       <workItem from="1496332325535" duration="657000" />
       <workItem from="1496495656714" duration="65000" />
-      <workItem from="1496498721532" duration="5580000" />
+      <workItem from="1496498721532" duration="7506000" />
     </task>
     <task id="LOCAL-00001" summary="- Added /rooms route">
       <created>1495882766054</created>
@@ -280,11 +280,18 @@
       <option name="project" value="LOCAL" />
       <updated>1496501526632</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="- Added CORS support (hopefully)">
+      <created>1496518055325</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1496518055325</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="10422000" />
+    <option name="totallyTimeSpent" value="12348000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1912" y="-8" width="1296" height="1000" extended-state="6" />
@@ -322,7 +329,8 @@
     <MESSAGE value="- Typo" />
     <MESSAGE value="- Removed some stuff" />
     <MESSAGE value="- Still socket.io wip" />
-    <option name="LAST_COMMIT_MESSAGE" value="- Still socket.io wip" />
+    <MESSAGE value="- Added CORS support (hopefully)" />
+    <option name="LAST_COMMIT_MESSAGE" value="- Added CORS support (hopefully)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -419,8 +427,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/server/server.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="410">
-          <caret line="23" column="3" lean-forward="true" selection-start-line="23" selection-start-column="3" selection-end-line="23" selection-end-column="3" />
+        <state relative-caret-position="392">
+          <caret line="22" column="48" lean-forward="false" selection-start-line="22" selection-start-column="48" selection-end-line="22" selection-end-column="48" />
           <folding />
         </state>
       </provider>
