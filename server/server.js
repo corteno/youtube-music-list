@@ -1,9 +1,8 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var {ObjectID} = require('mongodb');
-var io = require('socket.io')(app);
 var open = require('open');
-
+var http = require('http');
 
 var {mongoose} = require('./db/mongoose');
 var {Song} = require('./models/song');
@@ -12,7 +11,17 @@ var {Room} = require('./models/room');
 var {Playlist} = require('./models/playlist');
 
 var app = express();
+
 const port = process.env.PORT || 3000;
+
+var server = require('http').Server(app);
+
+/*const server = app.listen(port);*/
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
 
 
 app.use(bodyParser.json());
@@ -285,11 +294,16 @@ app.get('/rooms', (req, res) => {
     });
 });
 
+app.get('/', (req, res) => {
+    res.send('Hello world');
+});
 
 app.listen(port, () => {
     console.log(`Started up at port ${port}`);
-    open(`http://localhost:${port}`);
+
 });
+
+var io = require('socket.io').listen(server);
 
 io.on('connection', (socket) => {
     console.log('a user connected');
