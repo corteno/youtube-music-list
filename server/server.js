@@ -1,6 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var {ObjectID} = require('mongodb');
+var io = require('socket.io')(app);
 
 
 var {mongoose} = require('./db/mongoose');
@@ -263,9 +264,15 @@ app.post('/room', (req, res) => {
 
 });
 
+//Joining room
 app.get('/room/:id', (req, res) => {
     Room.find({id: req.params.id}).then((doc) => {
         if(doc){
+            
+            io.on('connection', (socket) => {
+                console.log('connected');
+            });
+            
             return res.send(doc);
         }
     }, (e) => {
