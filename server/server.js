@@ -300,12 +300,15 @@ app.get('/', (req, res) => {
     res.send('Hello world');
 });
 
-app.listen(port, () => {
+/*app.listen(port, () => {
     console.log(`Started up at port ${port}`);
 
-});
+});*/
 
 var io = require('socket.io').listen(server);
+server.listen(port, ()=> {
+    console.log(`Started up at port ${port}`);
+});
 
 io.on('connection', (socket) => {
     console.log('a user connected');
