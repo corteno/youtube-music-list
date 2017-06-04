@@ -9,14 +9,14 @@ var {Song} = require('./models/song');
 var {User} = require('./models/user');
 var {Room} = require('./models/room');
 var {Playlist} = require('./models/playlist');
-/*var http = require('http');*/
+var http = require('http');
 
 var app = express();
 
 const port = process.env.PORT || 3000;
-/*var server = http.Server(app);*/
+//var server = http.Server(app);
 var http = require( "http" ).createServer( app );
-/*var io = require('socket.io')(http);*/
+var io = require('socket.io')(http);
 
 
 http.listen(port, "127.0.0.1");
@@ -25,7 +25,7 @@ http.listen(port, "127.0.0.1");
 });*/
 
 
-/*io.on('connection', (socket) => {
+io.on('connection', (socket) => {
     console.log('a user connected');
     socket.emit('test', {message: 'asd'});
 
@@ -33,7 +33,7 @@ http.listen(port, "127.0.0.1");
         console.log('user disconnected');
     });
 });
-*/
+
 
 /*const server = app.listen(port);*/
 
