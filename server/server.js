@@ -23,7 +23,7 @@ server.listen(port, ()=> {
 
 io.on('connection', (socket) => {
     console.log('a user connected');
-    socket.emit('test', {message: 'asd'});
+    socket.emit('test', {message: 'Socket.io works'});
 
     socket.on('disconnect', () => {
         console.log('user disconnected');
