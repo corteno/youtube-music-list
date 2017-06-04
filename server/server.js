@@ -311,6 +311,7 @@ server.listen(port, ()=> {
     console.log(`Started up at port ${port}`);
 });
 
+
 io.on('connection', (socket) => {
     console.log('a user connected');
     socket.emit('test', {message: 'asd'});
