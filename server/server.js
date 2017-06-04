@@ -14,7 +14,20 @@ var app = express();
 
 const port = process.env.PORT || 3000;
 
-var server = require('http').Server(app);
+var server = app.listen(app.get('port'), function () {
+    console.log('server listening on port ' + server.address().port);
+});
+var io = require('socket.io')(server);
+
+
+io.on('connection', (socket) => {
+    console.log('a user connected');
+    socket.emit('test', {message: 'asd'});
+
+    socket.on('disconnect', () => {
+        console.log('user disconnected');
+    });
+});
 
 /*const server = app.listen(port);*/
 
@@ -305,18 +318,11 @@ app.get('/', (req, res) => {
 
 });*/
 
-var io = require('socket.io').listen(server);
+/*var io = require('socket.io').listen(server);
 server.listen(port, ()=> {
     console.log(`Started up at port ${port}`);
-});
+});*/
 
-io.on('connection', (socket) => {
-    console.log('a user connected');
-
-    socket.on('disconnect', () => {
-        console.log('user disconnected');
-    });
-});
 
 
 module.exports = {app};
