@@ -16,16 +16,16 @@ var app = express();
 const port = process.env.PORT || 3000;
 /*var server = http.Server(app);*/
 var http = require( "http" ).createServer( app );
-var io = require('socket.io')(http);
+/*var io = require('socket.io')(http);*/
 
 
-http.listen(8080, "127.0.0.1");
+http.listen(port, "127.0.0.1");
 /*server.listen(port, ()=> {
     console.log(`Started up at port ${port}`);
 });*/
 
 
-io.on('connection', (socket) => {
+/*io.on('connection', (socket) => {
     console.log('a user connected');
     socket.emit('test', {message: 'asd'});
 
@@ -33,7 +33,7 @@ io.on('connection', (socket) => {
         console.log('user disconnected');
     });
 });
-
+*/
 
 /*const server = app.listen(port);*/
 
