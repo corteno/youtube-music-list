@@ -20,10 +20,14 @@ server.listen(port, ()=> {
     console.log(`Started up at port ${port}`);
 });
 
+//SOCKET.IO STUFF
 
 io.on('connection', (socket) => {
     console.log('a user connected');
     socket.emit('test', {message: 'Socket.io works'});
+    socket.on('roomCreate', (data) =>{
+        console.log(data);
+    });
 
     socket.on('disconnect', () => {
         console.log('user disconnected');
@@ -31,8 +35,9 @@ io.on('connection', (socket) => {
 });
 
 
-/*const server = app.listen(port);*/
 
+
+//EXPRESS ROUTES
 //Need this to enable CORS else it whines, figure out how to only allow it to one domain like yt.borsodidavid.com
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
