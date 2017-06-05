@@ -21,8 +21,8 @@
       <file leaf-file-name="server.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/server/server.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="504">
-              <caret line="28" column="24" lean-forward="false" selection-start-line="28" selection-start-column="24" selection-end-line="28" selection-end-column="24" />
+            <state relative-caret-position="468">
+              <caret line="26" column="0" lean-forward="true" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -238,7 +238,7 @@
       <workItem from="1496498721532" duration="7536000" />
       <workItem from="1496606797736" duration="1216000" />
       <workItem from="1496608351203" duration="3507000" />
-      <workItem from="1496658749936" duration="720000" />
+      <workItem from="1496658749936" duration="1190000" />
     </task>
     <task id="LOCAL-00001" summary="- Added /rooms route">
       <created>1495882766054</created>
@@ -366,11 +366,18 @@
       <option name="project" value="LOCAL" />
       <updated>1496611785101</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="- Testing socket.io">
+      <created>1496663831103</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1496663831103</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="17821000" />
+    <option name="totallyTimeSpent" value="18291000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1912" y="-8" width="1296" height="1000" extended-state="6" />
@@ -412,7 +419,8 @@
     <MESSAGE value="- Added CORS support (It worked)" />
     <MESSAGE value="- Trying to make socket.io work" />
     <MESSAGE value="- Socket.io works" />
-    <option name="LAST_COMMIT_MESSAGE" value="- Socket.io works" />
+    <MESSAGE value="- Testing socket.io" />
+    <option name="LAST_COMMIT_MESSAGE" value="- Testing socket.io" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -579,8 +587,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/server/server.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="504">
-          <caret line="28" column="24" lean-forward="false" selection-start-line="28" selection-start-column="24" selection-end-line="28" selection-end-column="24" />
+        <state relative-caret-position="468">
+          <caret line="26" column="0" lean-forward="true" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
           <folding />
         </state>
       </provider>

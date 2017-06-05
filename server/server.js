@@ -24,7 +24,9 @@ server.listen(port, ()=> {
 
 io.on('connection', (socket) => {
     console.log('a user connected');
-    socket.emit('test', {message: 'Socket.io works'});
+
+    socket.emit('rooms', {message: 'Connected to Rooms'});
+
     socket.on('roomCreate', (data) =>{
         console.log(data);
     });
