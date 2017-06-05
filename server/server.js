@@ -28,7 +28,8 @@ io.on('connection', (socket) => {
     socket.emit('rooms', {message: 'Connected to Rooms'});
 
     socket.on('createRoom', (data) =>{
-        socket.emit('rooms', {message: 'Room created'});
+        socket.emit('rooms', {refresh: true});
+
         console.log(data);
     });
 
