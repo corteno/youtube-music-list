@@ -27,7 +27,7 @@ io.on('connection', (socket) => {
 
     socket.emit('rooms', {message: 'Connected to Rooms'});
 
-    socket.on('roomCreate', (data) =>{
+    socket.on('createRoom', (data) =>{
         console.log(data);
     });
 
