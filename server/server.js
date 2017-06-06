@@ -16,7 +16,7 @@ const port = process.env.PORT || 3000;
 var server = app.listen(port);
 var io = require('socket.io')(server);
 
-server.listen(port, ()=> {
+server.listen(port, () => {
     console.log(`Started up at port ${port}`);
 });
 
@@ -29,12 +29,11 @@ io.on('connection', (socket) => {
 
     socket.emit('rooms', {message: 'Connected to Rooms'});
 
-    socket.on('createRoom', (data) =>{
+    socket.on('createRoom', (data) => {
         socket.broadcast.emit('rooms', {refresh: true});
 
         console.log(data);
     });
-
 
 
     socket.on('disconnect', () => {
@@ -43,10 +42,9 @@ io.on('connection', (socket) => {
 });
 
 
-
 //EXPRESS ROUTES
 //Need this to enable CORS else it whines, figure out how to only allow it to one domain like yt.borsodidavid.com
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
@@ -307,12 +305,12 @@ app.post('/room', (req, res) => {
 //Joining room
 app.get('/room/:id', (req, res) => {
     Room.find({id: req.params.id}).then((doc) => {
-        if(doc){
+        if (doc) {
 
-           /* io.on('connection', (socket, room) => {
+            io.on('connection', (socket, room) => {
                 console.log(room.id);
                 socket.emit(room.id, {message: `Connected to ${room.id}`});
-            });*/
+            });
 
             return res.send(doc);
         }
@@ -325,23 +323,23 @@ app.get('/rooms', (req, res) => {
     Room.find().sort('-date').then((rooms) => {
 
         /*//Need to make them in the proper place
-        io.on('connection', (socket) => {
-            console.log('a user connected');
+         io.on('connection', (socket) => {
+         console.log('a user connected');
 
-            socket.emit('rooms', {message: 'Connected to Rooms'});
+         socket.emit('rooms', {message: 'Connected to Rooms'});
 
-            socket.on('createRoom', (data) =>{
-                socket.broadcast.emit('rooms', {refresh: true});
+         socket.on('createRoom', (data) =>{
+         socket.broadcast.emit('rooms', {refresh: true});
 
-                console.log(data);
-            });
+         console.log(data);
+         });
 
 
 
-            socket.on('disconnect', () => {
-                console.log('user disconnected');
-            });
-        });*/
+         socket.on('disconnect', () => {
+         console.log('user disconnected');
+         });
+         });*/
 
 
         res.send({rooms});
@@ -357,9 +355,9 @@ app.get('/', (req, res) => {
 });
 
 /*app.listen(port, () => {
-    console.log(`Started up at port ${port}`);
+ console.log(`Started up at port ${port}`);
 
-});*/
+ });*/
 
 
 
