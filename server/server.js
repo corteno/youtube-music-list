@@ -317,7 +317,9 @@ app.post('/room', (req, res) => {
 app.get('/room/:id', (req, res) => {
     Room.find({id: req.params.id}).then((doc) => {
         if (doc) {
-
+            io.on(req.params.id, (socket) =>{
+               socket.emit('test', {message: `Connected to room ${req.params.id}`});
+            });
 
             return res.send(doc);
         }
