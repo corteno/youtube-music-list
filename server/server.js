@@ -23,7 +23,24 @@ server.listen(port, ()=> {
 //SOCKET.IO STUFF
 
 
+//Need to make them in the proper place
+io.on('connection', (socket) => {
+    console.log('a user connected');
 
+    socket.emit('rooms', {message: 'Connected to Rooms'});
+
+    socket.on('createRoom', (data) =>{
+        socket.broadcast.emit('rooms', {refresh: true});
+
+        console.log(data);
+    });
+
+
+
+    socket.on('disconnect', () => {
+        console.log('user disconnected');
+    });
+});
 
 
 
@@ -306,6 +323,8 @@ app.get('/room/:id', (req, res) => {
 
 app.get('/rooms', (req, res) => {
     Room.find().sort('-date').then((rooms) => {
+
+        /*//Need to make them in the proper place
         io.on('connection', (socket) => {
             console.log('a user connected');
 
@@ -322,7 +341,7 @@ app.get('/rooms', (req, res) => {
             socket.on('disconnect', () => {
                 console.log('user disconnected');
             });
-        });
+        });*/
 
 
         res.send({rooms});
