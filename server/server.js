@@ -40,6 +40,9 @@ io.on('connection', (socket) => {
     });
 
     socket.emit('enterRoom', {message: 'Entered room'});
+    socket.on('enterRoom', (data) => {
+        socket.emit('enterRoom', data);
+    });
 
     /*socket.on('enterRoom', (data) => {
         socket.emit('rooms', {data});
@@ -317,10 +320,6 @@ app.post('/room', (req, res) => {
 app.get('/room/:id', (req, res) => {
     Room.find({id: req.params.id}).then((doc) => {
         if (doc) {
-            io.on(req.params.id, (socket) =>{
-               socket.emit('test', {message: `Connected to room ${req.params.id}`});
-            });
-
             return res.send(doc);
         }
     }, (e) => {
