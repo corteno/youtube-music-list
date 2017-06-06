@@ -35,6 +35,11 @@ io.on('connection', (socket) => {
         console.log(data);
     });
 
+    socket.on('enterRoom', (data) => {
+        socket.emit('rooms', {data});
+        console.log('Entered room' + data);
+    });
+
 
     socket.on('disconnect', () => {
         console.log('user disconnected');
