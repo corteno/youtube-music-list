@@ -36,19 +36,33 @@ io.on('connection', (socket) => {
     });
 
     socket.on('leaveRoom', (data) => {
-        socket.emit('test', data);
+        socket.leave(data.room);
     });
 
+
     socket.emit('enterRoom', {message: 'Entered room'});
-    socket.on('enterRoom', (data) => {
-        socket.emit('enterRoom', data);
-        socket.emit(data.id, {message: `Welcome to room ${data.id}`});
+
+    socket.on('enterRoom', (roomId) => {
+        console.log(roomId);
+
+        socket.emit('enterRoom', roomId);
+
+        //Custom room sender
+        //socket.emit(roomId, {id: roomId});
+
+        //Custom room listener
+        socket.on(roomId, (data) => {
+            socket.emit(roomId, {
+                message: `User connected to ${roomId}`
+            });
+            console.log(data);
+        });
     });
 
     /*socket.on('enterRoom', (data) => {
-        socket.emit('rooms', {data});
-        console.log('Entered room' + data);
-    });*/
+     socket.emit('rooms', {data});
+     console.log('Entered room' + data);
+     });*/
 
 
     socket.on('disconnect', () => {
