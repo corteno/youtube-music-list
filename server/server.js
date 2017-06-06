@@ -35,10 +35,12 @@ io.on('connection', (socket) => {
         console.log(data);
     });
 
-    socket.on('enterRoom', (data) => {
+    socket.emit('enterRoom', {message: 'Entered room'});
+
+    /*socket.on('enterRoom', (data) => {
         socket.emit('rooms', {data});
         console.log('Entered room' + data);
-    });
+    });*/
 
 
     socket.on('disconnect', () => {
