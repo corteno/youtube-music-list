@@ -35,6 +35,10 @@ io.on('connection', (socket) => {
         console.log(data);
     });
 
+    socket.on('leaveRoom', (data) => {
+        socket.emit('test', {data});
+    });
+
     socket.emit('enterRoom', {message: 'Entered room'});
 
     /*socket.on('enterRoom', (data) => {

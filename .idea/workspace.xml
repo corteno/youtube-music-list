@@ -21,8 +21,8 @@
       <file leaf-file-name="server.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/server/server.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="396">
-              <caret line="33" column="0" lean-forward="true" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
+            <state relative-caret-position="450">
+              <caret line="36" column="0" lean-forward="true" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -248,7 +248,7 @@
       <workItem from="1496606797736" duration="1216000" />
       <workItem from="1496608351203" duration="3507000" />
       <workItem from="1496658749936" duration="2814000" />
-      <workItem from="1496733138043" duration="7959000" />
+      <workItem from="1496733138043" duration="8663000" />
     </task>
     <task id="LOCAL-00001" summary="- Added /rooms route">
       <created>1495882766054</created>
@@ -474,11 +474,18 @@
       <option name="project" value="LOCAL" />
       <updated>1496748937432</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="- Socket.io testing">
+      <created>1496750824526</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1496750824526</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="27874000" />
+    <option name="totallyTimeSpent" value="28578000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="2873" y="0" width="974" height="1047" extended-state="0" />
@@ -723,8 +730,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/server/server.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="396">
-          <caret line="33" column="0" lean-forward="true" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
+        <state relative-caret-position="450">
+          <caret line="36" column="0" lean-forward="true" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
           <folding />
         </state>
       </provider>
