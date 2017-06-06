@@ -307,10 +307,6 @@ app.get('/room/:id', (req, res) => {
     Room.find({id: req.params.id}).then((doc) => {
         if (doc) {
 
-            io.on('connection', (socket, room) => {
-                console.log(room.id);
-                socket.emit(room.id, {message: `Connected to ${room.id}`});
-            });
 
             return res.send(doc);
         }
