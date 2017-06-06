@@ -33,6 +33,8 @@ io.on('connection', (socket) => {
         console.log(data);
     });
 
+
+
     socket.on('disconnect', () => {
         console.log('user disconnected');
     });
@@ -265,6 +267,7 @@ app.post('/room', (req, res) => {
                 room.save().then((doc) => {
                     res.send(doc);
 
+
                 }, (e) => {
                     res.status(400).send(e);
                 });
@@ -304,6 +307,11 @@ app.post('/room', (req, res) => {
 app.get('/room/:id', (req, res) => {
     Room.find({id: req.params.id}).then((doc) => {
         if(doc){
+
+            io.on('connection', (socket, room) => {
+                console.log(room.id);
+                socket.emit(room.id, {message: `Connected to ${room.id}`});
+            });
 
             return res.send(doc);
         }
