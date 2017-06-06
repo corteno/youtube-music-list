@@ -22,23 +22,7 @@ server.listen(port, ()=> {
 
 //SOCKET.IO STUFF
 
-io.on('connection', (socket) => {
-    console.log('a user connected');
 
-    socket.emit('rooms', {message: 'Connected to Rooms'});
-
-    socket.on('createRoom', (data) =>{
-        socket.broadcast.emit('rooms', {refresh: true});
-
-        console.log(data);
-    });
-
-
-
-    socket.on('disconnect', () => {
-        console.log('user disconnected');
-    });
-});
 
 
 
@@ -321,11 +305,30 @@ app.get('/room/:id', (req, res) => {
 });
 
 app.get('/rooms', (req, res) => {
+    io.on('connection', (socket) => {
+        console.log('a user connected');
+
+        socket.emit('rooms', {message: 'Connected to Rooms'});
+
+        socket.on('createRoom', (data) =>{
+            socket.broadcast.emit('rooms', {refresh: true});
+
+            console.log(data);
+        });
+
+
+
+        socket.on('disconnect', () => {
+            console.log('user disconnected');
+        });
+    });
+
     Room.find().sort('-date').then((rooms) => {
         res.send({rooms});
     }, (e) => {
         res.status(400).send();
     });
+
 });
 
 app.get('/', (req, res) => {
