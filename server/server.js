@@ -41,7 +41,7 @@ io.on('connection', (socket) => {
 
     socket.emit('enterRoom', {message: 'Entered room'});
     socket.on('enterRoom', (data) => {
-        socket.emit('enterRoom', data);
+        socket.emit('enterRoom', data.id);
         socket.emit(data.id, {message: `Welcome to room ${data.id}`});
     });
 
