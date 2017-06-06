@@ -313,7 +313,7 @@ app.get('/room/:id', (req, res) => {
 });
 
 app.get('/rooms', (req, res) => {
-    Room.find().then((rooms) => {
+    Room.find().sort('-date').then((rooms) => {
         res.send({rooms});
     }, (e) => {
         res.status(400).send();
