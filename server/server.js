@@ -3,6 +3,7 @@ var bodyParser = require('body-parser');
 var {ObjectID} = require('mongodb');
 var open = require('open');
 var http = require('http');
+var cors = require('cors');
 
 var {mongoose} = require('./db/mongoose');
 var {Song} = require('./models/song');
@@ -36,33 +37,59 @@ io.on('connection', (socket) => {
     });
 
     socket.on('leaveRoom', (data) => {
+        console.log(`${data.username} left room ${data.room}`);
         socket.leave(data.room);
+        socket.leave('enterRoom');
+    });
+
+    socket.on('leaveRooms', (data) => {
+       console.log(`${data.username} left rooms`);
+       socket.leave('rooms');
     });
 
 
-    socket.emit('enterRoom', {message: 'Entered room'});
 
-    socket.on('enterRoom', (roomId) => {
-        console.log(roomId);
 
-        socket.emit('enterRoom', roomId);
+    socket.on('enterRoom', (data) => {
+        console.log(`${data.username} entered room ${data.roomId}`);
+
+        socket.emit('enterRoom', {message: `${data.username} entered room ${data.roomId}`});
 
         //Custom room sender
-        //socket.emit(roomId, {id: roomId});
+        //socket.emit(data.roomId, {id: data.roomId});
 
         //Custom room listener
-        socket.on(roomId, (data) => {
-            socket.emit(roomId, {
-                message: `User connected to ${roomId}`
+        socket.on(data.roomId, (data) => {
+            socket.emit(data.roomId, {
+                message: `User connected to ${data.roomId}`
             });
             console.log(data);
         });
     });
 
-    /*socket.on('enterRoom', (data) => {
-     socket.emit('rooms', {data});
-     console.log('Entered room' + data);
-     });*/
+    socket.on('subscribe', (data) => {
+        let roomId = data.roomId;
+        console.log(`${data.username} subscribed to room ${data.roomId}`);
+        socket.join(data.roomId);
+        
+        socket.on(data.roomId, (roomData) => {
+            console.log(roomData);
+            socket.emit(roomId, {
+                message: "Hello client, love from Server"
+            })
+        });
+    });
+
+
+    socket.on('unsubscribe', (data) => {
+        console.log(`${data.username} unsubscribed from room ${data.roomId}`);
+        socket.leave(data.roomId);
+    });
+
+
+
+
+
 
 
     socket.on('disconnect', () => {
@@ -73,11 +100,13 @@ io.on('connection', (socket) => {
 
 //EXPRESS ROUTES
 //Need this to enable CORS else it whines, figure out how to only allow it to one domain like yt.borsodidavid.com
-app.use(function (req, res, next) {
+/*app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
-});
+});*/
+
+app.use(cors());
 
 
 app.use(bodyParser.json());
