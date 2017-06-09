@@ -28,7 +28,7 @@ server.listen(port, () => {
 io.on('connection', (socket) => {
     console.log('a user connected');
 
-    socket.emit('rooms', {message: 'Connected to Rooms'});
+    //socket.emit('rooms', {message: 'Connected to Rooms'});
 
     socket.on('createRoom', (data) => {
         socket.broadcast.emit('rooms', {refresh: true});
@@ -36,63 +36,75 @@ io.on('connection', (socket) => {
         console.log(data);
     });
 
-    socket.on('leaveRoom', (data) => {
-        console.log(`${data.username} left room ${data.room}`);
-        socket.leave(data.room);
-        socket.leave('enterRoom');
-    });
-
     socket.on('leaveRooms', (data) => {
-       console.log(`${data.username} left rooms`);
-       socket.leave('rooms');
+        console.log(`${data.username} left rooms`);
+        socket.leave('rooms');
     });
 
-
-
-
-    socket.on('enterRoom', (data) => {
-        console.log(`${data.username} entered room ${data.roomId}`);
-
-        socket.emit('enterRoom', {message: `${data.username} entered room ${data.roomId}`});
-
-        //Custom room sender
-        //socket.emit(data.roomId, {id: data.roomId});
-
-        //Custom room listener
-        socket.on(data.roomId, (data) => {
-            socket.emit(data.roomId, {
-                message: `User connected to ${data.roomId}`
-            });
-            console.log(data);
-        });
-    });
 
     socket.on('subscribe', (data) => {
+        socket.nickname = data.username;
+
         let roomId = data.roomId;
         console.log(`${data.username} subscribed to room ${data.roomId}`);
         socket.join(data.roomId);
-        
-        socket.on(data.roomId, (roomData) => {
+
+        //Appeding user to database
+        Room.findOneAndUpdate({id: roomId}, {
+                $addToSet: {
+                    userlist: data.username
+                }
+            },
+            {
+                new: true
+            }
+        ).then((doc) => {
+            //console.log(doc);
+            console.log();
+            socket.to(roomId).broadcast.emit(roomId, doc);
+        })
+            .catch((e) => {
+                console.log(e);
+            });
+
+
+        socket.on(roomId, (roomData) => {
             console.log(roomData);
-            socket.emit(roomId, {
-                message: "Hello client, love from Server"
-            })
+
         });
     });
 
 
     socket.on('unsubscribe', (data) => {
-        console.log(`${data.username} unsubscribed from room ${data.roomId}`);
-        socket.leave(data.roomId);
+        //console.log('left rooms');
+
+        Room.update({id: data.roomId}, {
+            $pull: {
+                userlist: data.username
+            }
+        }, {
+            new: true
+        })
+            .then((doc) => {
+                //console.log(doc);
+
+                console.log(`${data.username} unsubscribed from room ${data.roomId}`);
+                socket.leave(data.roomId);
+                socket.leave('subscribe');
+                socket.leave('unsibscribe');
+
+
+
+            })
+            .catch((e) => {
+                console.log(e);
+            })
+
     });
 
 
-
-
-
-
-
     socket.on('disconnect', () => {
+        socket.disconnect();
         console.log('user disconnected');
     });
 });
@@ -101,10 +113,10 @@ io.on('connection', (socket) => {
 //EXPRESS ROUTES
 //Need this to enable CORS else it whines, figure out how to only allow it to one domain like yt.borsodidavid.com
 /*app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-});*/
+ res.header("Access-Control-Allow-Origin", "*");
+ res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+ next();
+ });*/
 
 app.use(cors());
 
@@ -221,18 +233,6 @@ app.delete('/song/:playlistId/:songId', (req, res) => {
         res.status(400).send(e);
     });
 
-
-    /*Song.findByIdAndRemove(playlistId).then((song) => {
-
-     if (!song) {
-     return res.status(404).send();
-     }
-
-     res.send(song);
-
-     }, (e) => {
-     res.status(400).send();
-     });*/
 
 });
 
@@ -373,27 +373,6 @@ app.get('/room/:id', (req, res) => {
 
 app.get('/rooms', (req, res) => {
     Room.find().sort('-date').then((rooms) => {
-
-        /*//Need to make them in the proper place
-         io.on('connection', (socket) => {
-         console.log('a user connected');
-
-         socket.emit('rooms', {message: 'Connected to Rooms'});
-
-         socket.on('createRoom', (data) =>{
-         socket.broadcast.emit('rooms', {refresh: true});
-
-         console.log(data);
-         });
-
-
-
-         socket.on('disconnect', () => {
-         console.log('user disconnected');
-         });
-         });*/
-
-
         res.send({rooms});
 
     }, (e) => {
@@ -402,18 +381,27 @@ app.get('/rooms', (req, res) => {
 
 });
 
-app.get('/', (req, res) => {
-    res.send('Hello world');
+app.delete('/room/:roomId', (req, res) => {
+    Room.findOneAndRemove({id: req.params.roomId})
+        .then((doc) => {
+            Playlist.findOneAndRemove({id: req.params.roomId})
+                .then((doc) => {
+                    console.log('Delete playlist:', doc);
+                    res.send('Room and playlist deleted');
+
+                })
+                .catch((e) => {
+                    console.log(e);
+                    res.status(400).send();
+                });
+        
+            console.log('Delete room:',doc);
+        })
+        .catch((e) => {
+            console.log(e);
+            res.status(400).send();
+        });
 });
-
-/*app.listen(port, () => {
- console.log(`Started up at port ${port}`);
-
- });*/
-
-
-
-/*io.listen(port);*/
 
 
 module.exports = {app};

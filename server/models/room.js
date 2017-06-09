@@ -26,6 +26,10 @@ var Room = mongoose.model('Room', {
     id: {
         type: String,
         required: true
+    },
+    userlist: {
+        type: Array,
+        default: []
     }
 });
 
