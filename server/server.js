@@ -27,6 +27,7 @@ server.listen(port, () => {
 //Need to make them in the proper place
 io.on('connection', (socket) => {
     console.log('a user connected');
+    let roomId;
 
     //socket.emit('rooms', {message: 'Connected to Rooms'});
 
@@ -37,17 +38,37 @@ io.on('connection', (socket) => {
     });
 
     socket.on('leaveRooms', (data) => {
-        console.log(`${data.username} left rooms`);
+        //console.log(`${data.username} left rooms`);
         socket.leave('rooms');
     });
 
 
-    socket.on('subscribe', (data) => {
-        socket.nickname = data.username;
+    //If a client wants other clients to refresh
+    //E.g.: in case of adding a new
+    socket.on('refresh', (data) => {
+        console.log('refresh', data.type);
+        if (data.type === 'playlist') {
+            socket.broadcast.emit('refresh', {
+                type: data.type
+            });
+        }
 
+    });
+
+
+    //Joining a room
+    socket.on('subscribe', (data) => {
         let roomId = data.roomId;
-        console.log(`${data.username} subscribed to room ${data.roomId}`);
-        socket.join(data.roomId);
+
+        //Setting the nickname to a combination of the username and the roomId
+        //So on disconnect I can read the value, split along the slash
+        //And run the proper
+        socket.nickname = data.username + "/" + data.roomId;
+
+        socket.join(roomId, () => {
+            console.log("Subscribe", data, socket.rooms);
+
+        });
 
         //Appeding user to database
         Room.findOneAndUpdate({id: roomId}, {
@@ -60,52 +81,71 @@ io.on('connection', (socket) => {
             }
         ).then((doc) => {
             //console.log(doc);
-            console.log();
-            socket.to(roomId).broadcast.emit(roomId, doc);
+            console.log('Emitting room userlist');
+
+            //Sometimes it throws an error for not existing variable
+            if (doc.userlist) {
+                //Emitting only the userlist array to the clients in that specific room
+                io.sockets.emit(roomId, doc.userlist);
+            }
         })
             .catch((e) => {
                 console.log(e);
             });
 
 
-        socket.on(roomId, (roomData) => {
-            console.log(roomData);
-
-        });
     });
 
-
     socket.on('unsubscribe', (data) => {
-        //console.log('left rooms');
-
-        Room.update({id: data.roomId}, {
-            $pull: {
-                userlist: data.username
-            }
-        }, {
-            new: true
-        })
+        //Finding the room and removing the leaving user from the list
+        Room.findOneAndUpdate({id: data.roomId}, {$pull: {userlist: data.username}}, {new: true})
             .then((doc) => {
                 //console.log(doc);
-
                 console.log(`${data.username} unsubscribed from room ${data.roomId}`);
-                socket.leave(data.roomId);
-                socket.leave('subscribe');
-                socket.leave('unsibscribe');
 
+                //Disconnect before sending the broadcast
+                //So the leaving client won't get the updated user list
+                socket.disconnect();
 
+                //Need to send only an array since that's what the frontend expects
+                io.sockets.emit('refresh', {
+                    type: 'userlist',
+                    content: doc.userlist
+                });
 
             })
             .catch((e) => {
                 console.log(e);
-            })
+            });
+
 
     });
 
-
     socket.on('disconnect', () => {
-        socket.disconnect();
-        console.log('user disconnected');
+        if (socket.nickname) {
+            let split = socket.nickname.split("/");
+            let username = split[0];
+            let roomId = split[1];
+
+
+            Room.findOneAndUpdate({id: roomId}, {$pull: {userlist: username}}, {new: true})
+                .then((doc) => {
+                    //console.log(doc);
+                    console.log(`${username} disconnected from room ${roomId}`);
+                    //Disconnect before sending the broadcast
+                    //So the leaving client won't get the updated user list
+                    socket.disconnect();
+
+                    //Need to send only an array since that's what the frontend expects
+                    io.sockets.emit('refresh', doc.userlist);
+
+                })
+                .catch((e) => {
+                    console.log(e);
+                });
+
+        }
+
     });
 });
 
@@ -153,7 +193,7 @@ app.post('/song', (req, res) => {
             let playlistArray = doc.songs;
             playlistArray.push(songToAdd);
 
-            console.log(doc, playlistArray);
+            //console.log(doc, playlistArray);
 
             Playlist.update({_id: doc._id}, {
                 songs: playlistArray
@@ -394,8 +434,8 @@ app.delete('/room/:roomId', (req, res) => {
                     console.log(e);
                     res.status(400).send();
                 });
-        
-            console.log('Delete room:',doc);
+
+            console.log('Delete room:', doc);
         })
         .catch((e) => {
             console.log(e);
