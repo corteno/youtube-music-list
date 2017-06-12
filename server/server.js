@@ -48,7 +48,7 @@ io.on('connection', (socket) => {
     socket.on('refresh', (data) => {
         console.log('refresh', data.type);
         if (data.type === 'playlist') {
-            socket.broadcast.emit('refresh', {
+            socket.broadcast.emit(`refresh-${data.roomId}`, {
                 type: data.type
             });
         }
@@ -58,20 +58,18 @@ io.on('connection', (socket) => {
 
     //Joining a room
     socket.on('subscribe', (data) => {
-        let roomId = data.roomId;
 
         //Setting the nickname to a combination of the username and the roomId
         //So on disconnect I can read the value, split along the slash
         //And run the proper
         socket.nickname = data.username + "/" + data.roomId;
 
-        socket.join(roomId, () => {
+        socket.join(data.roomId, () => {
             console.log("Subscribe", data, socket.rooms);
-
         });
 
         //Appeding user to database
-        Room.findOneAndUpdate({id: roomId}, {
+        Room.findOneAndUpdate({id: data.roomId}, {
                 $addToSet: {
                     userlist: data.username
                 }
@@ -80,13 +78,14 @@ io.on('connection', (socket) => {
                 new: true
             }
         ).then((doc) => {
-            //console.log(doc);
-            console.log('Emitting room userlist');
-
             //Sometimes it throws an error for not existing variable
             if (doc.userlist) {
                 //Emitting only the userlist array to the clients in that specific room
-                io.sockets.emit(roomId, doc.userlist);
+                console.log(`Emitting ${data.roomId} room userlist`, doc.userlist);
+                io.sockets.emit(data.roomId, {
+                    userlist: doc.userlist,
+                    type: 'userlist'
+                });
             }
         })
             .catch((e) => {
@@ -98,19 +97,25 @@ io.on('connection', (socket) => {
 
     socket.on('unsubscribe', (data) => {
         //Finding the room and removing the leaving user from the list
-        Room.findOneAndUpdate({id: data.roomId}, {$pull: {userlist: data.username}}, {new: true})
+        //Watch out for pulling a string or an object, it MATTERS
+        Room.findOneAndUpdate({id: data.roomId}, {
+            $pull: {
+                userlist: data.username
+
+            }
+        }, {new: true})
             .then((doc) => {
                 //console.log(doc);
                 console.log(`${data.username} unsubscribed from room ${data.roomId}`);
-
                 //Disconnect before sending the broadcast
                 //So the leaving client won't get the updated user list
                 socket.disconnect();
 
                 //Need to send only an array since that's what the frontend expects
-                io.sockets.emit('refresh', {
+                console.log('Emitting refresh userlist', doc.userlist);
+                io.sockets.emit(`refresh-${data.roomId}`, {
                     type: 'userlist',
-                    content: doc.userlist
+                    userlist: doc.userlist
                 });
 
             })
@@ -119,6 +124,10 @@ io.on('connection', (socket) => {
             });
 
 
+    });
+    
+    socket.on('addSpeaker', (data) => {
+       console.log(data);
     });
 
     socket.on('disconnect', () => {
@@ -137,7 +146,11 @@ io.on('connection', (socket) => {
                     socket.disconnect();
 
                     //Need to send only an array since that's what the frontend expects
-                    io.sockets.emit('refresh', doc.userlist);
+                    io.sockets.emit(`refresh-${roomId}`, {
+                        userlist: doc.userlist,
+                        type: 'userlist'
+                    });
+
 
                 })
                 .catch((e) => {
@@ -189,6 +202,7 @@ app.post('/song', (req, res) => {
                 duration: song.duration,
                 thumbnail: song.thumbnail
             });
+
 
             let playlistArray = doc.songs;
             playlistArray.push(songToAdd);
@@ -299,6 +313,7 @@ app.post('/user', (req, res) => {
             res.status(400).send();
         });
 
+
     }, (e) => {
         res.status(400).send();
     });
@@ -341,7 +356,8 @@ app.post('/room', (req, res) => {
         password: req.body.password,
         owner: req.body.owner,
         isPublic: req.body.isPublic,
-        id: req.body.id
+        id: req.body.id,
+        speakers: req.body.owner
     });
 
     var playlist = new Playlist({

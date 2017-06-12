@@ -31,6 +31,10 @@ var Room = mongoose.model('Room', {
     userlist: {
         type: Array,
         default: []
+    },
+    speakers: {
+        type: Array,
+        default: []
     }
 });
 
