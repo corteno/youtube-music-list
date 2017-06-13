@@ -125,9 +125,64 @@ io.on('connection', (socket) => {
 
 
     });
-    
+
+
+    //Adding a speaker to a room
     socket.on('addSpeaker', (data) => {
-       console.log(data);
+        console.log('Add speaker:', data);
+
+        Room.findOneAndUpdate({id: data.roomId}, {
+            $addToSet: {
+                speakers: data.username
+            }
+        }, {new: true})
+            .then((doc) => {
+                //console.log(doc);
+                console.log(`${data.username} added as speaker to room ${data.roomId}`);
+                //Disconnect before sending the broadcast
+                //So the leaving client won't get the updated user list
+                //console.log('Emitting new speakers list', doc);
+                //Need to send only an array since that's what the frontend expects
+                io.sockets.emit(`refresh-${data.roomId}`, {
+                    speakers: doc.speakers,
+                    type: 'speakers'
+                });
+
+
+            })
+            .catch((e) => {
+                console.log(e);
+            });
+
+    });
+
+    socket.on('removeSpeaker', (data) => {
+        console.log('Remove speaker:', data);
+
+        Room.findOneAndUpdate({id: data.roomId}, {
+            $pull: {
+                speakers: data.username
+            }
+        }, {new: true})
+            .then((doc) => {
+                //console.log(doc);
+                console.log(`${data.username} added as speaker to room ${data.roomId}`);
+                //Disconnect before sending the broadcast
+                //So the leaving client won't get the updated user list
+
+                //console.log('Emitting new speakers list', doc);
+                //Need to send only an array since that's what the frontend expects
+                io.sockets.emit(`refresh-${data.roomId}`, {
+                    speakers: doc.speakers,
+                    type: 'speakers'
+                });
+
+
+            })
+            .catch((e) => {
+                console.log(e);
+            });
+
     });
 
     socket.on('disconnect', () => {
