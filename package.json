@@ -16,7 +16,7 @@
     "express-jwt": "^6.0.0",
     "jwks-rsa": "^1.1.1",
     "mongodb": "^2.2.26",
-    "mongoose": "^4.9.6",
+    "mongoose": "^5.7.5",
     "npm": "^5.0.1",
     "open": "6.0.0",
     "socket.io": "^2.0.2"
